@@ -1,15 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UiManager : MonoBehaviour
 {
-    static int pauseLevel = 0;
+    static PauseLevel pauseLevel = PauseLevel.Game;
     [SerializeField]
     private GameObject pauseMenu;
     [SerializeField]
     private GameObject optionsBar;
+    [SerializeField]
+    private GameObject soundOptionsBar;
 
     void Start()
     {
@@ -23,14 +26,14 @@ public class UiManager : MonoBehaviour
         {
             switch (pauseLevel)
             {
-                case 0:
+                case PauseLevel.Game:
                     Pause();
                     break;
-                case 1:
+                case PauseLevel.Pause:
                     Resume();
                     break;
-                case 2:
-                    Back();
+                default:
+                    SetMainPause();
                     break;
             }
         }
@@ -38,30 +41,64 @@ public class UiManager : MonoBehaviour
 
     public void Pause()
     {
-        pauseLevel = 1;
+        pauseLevel = PauseLevel.Pause;
         pauseMenu.SetActive(true);
+        optionsBar.SetActive(false);
+        soundOptionsBar.SetActive(false);
     }
 
     public void Resume()
     {
-        pauseLevel = 0;
+        pauseLevel = PauseLevel.Game;
         pauseMenu.SetActive(false);
+        optionsBar.SetActive(false);
     }
 
-    public void Back()
+    public void SetMainPause()
     {
-        pauseLevel = 1;
+        pauseLevel = PauseLevel.Pause;
         optionsBar.SetActive(false);
+        soundOptionsBar.SetActive(false);
     }
 
     public void OpenOptions()
     {
-        if (pauseLevel > 1)
+        if (pauseLevel == PauseLevel.Options || pauseLevel == PauseLevel.Sounds)
         {
-            Back();
+            SetMainPause();
             return;
         }
-        pauseLevel = 2;
+        pauseLevel = PauseLevel.Pause;
         optionsBar.SetActive(true);
+    }
+
+    public void OpenOptions(string option)
+    {
+        switch(option.ToLower())
+        {
+            case "sound":
+                if(pauseLevel== PauseLevel.Sounds)
+                {
+                    pauseLevel= PauseLevel.Options;
+                    soundOptionsBar.SetActive(false);
+                    break;
+                }
+                soundOptionsBar.SetActive(true);
+                pauseLevel= PauseLevel.Sounds;
+                break;
+            default:
+                Pause();
+                OpenOptions();
+                this.SendMessage($"Brak opcji {option}");
+                break;
+        }
+    }
+
+    public enum PauseLevel
+    {
+        Game,
+        Pause,
+        Options,
+        Sounds
     }
 }
