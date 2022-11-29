@@ -1720,6 +1720,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3886862711844184414, guid: 4dfb1be09f4c71340809ad5adb558692, type: 3}
+      propertyPath: m_text
+      value: Angielski
+      objectReference: {fileID: 0}
     - target: {fileID: 8453637179793266264, guid: 4dfb1be09f4c71340809ad5adb558692, type: 3}
       propertyPath: m_text
       value: 'Dubbing:'
@@ -2450,6 +2454,10 @@ PrefabInstance:
       propertyPath: m_text
       value: Dialogi
       objectReference: {fileID: 0}
+    - target: {fileID: 6596733471808509102, guid: 65eaf093ce75d944daa8d0c7a39ae62c, type: 3}
+      propertyPath: m_text
+      value: Wycisz
+      objectReference: {fileID: 0}
     - target: {fileID: 7826981099531669288, guid: 65eaf093ce75d944daa8d0c7a39ae62c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2675,6 +2683,10 @@ PrefabInstance:
     - target: {fileID: 3886862710465069823, guid: 4dfb1be09f4c71340809ad5adb558692, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886862711844184414, guid: 4dfb1be09f4c71340809ad5adb558692, type: 3}
+      propertyPath: m_text
+      value: 5.1
       objectReference: {fileID: 0}
     - target: {fileID: 8453637179793266264, guid: 4dfb1be09f4c71340809ad5adb558692, type: 3}
       propertyPath: m_text
@@ -3646,7 +3658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1528426904313530281, guid: ff69875ee3fd6ac4da1cee2f55f6341d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -176
+      value: -208
       objectReference: {fileID: 0}
     - target: {fileID: 1528426904313530281, guid: ff69875ee3fd6ac4da1cee2f55f6341d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
