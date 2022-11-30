@@ -13,12 +13,12 @@ public class UiManager : MonoBehaviour
     private GameObject optionsBar;
     [SerializeField]
     private GameObject soundOptionsBar;
-
-    void Start()
-    {
-
-    }
-
+    [SerializeField]
+    private GameObject gameplayOptionsBar;
+    [SerializeField]
+    private GameObject controlsOptionsBar;
+    [SerializeField]
+    private GameObject graphicOptionsBar;
 
     void Update()
     {
@@ -63,34 +63,58 @@ public class UiManager : MonoBehaviour
 
     public void OpenOptions()
     {
-        if (pauseLevel == PauseLevel.Options || pauseLevel == PauseLevel.Sounds)
+        if (pauseLevel != PauseLevel.Pause)
         {
             SetMainPause();
             return;
         }
         pauseLevel = PauseLevel.Pause;
         optionsBar.SetActive(true);
+        CloseAdvancedOptions();
+    }
+
+    private void CloseAdvancedOptions()
+    {
+
+        soundOptionsBar.SetActive(false);
+        gameplayOptionsBar.SetActive(false);
+        controlsOptionsBar.SetActive(false);
+        graphicOptionsBar.SetActive(false);
     }
 
     public void OpenOptions(string option)
     {
-        switch(option.ToLower())
+        if ((soundOptionsBar.active && option != "sound") ||
+           (gameplayOptionsBar.active && option != "gameplay") ||
+           (controlsOptionsBar.active && option != "controls") ||
+           (graphicOptionsBar.active && option != "graphic"))
+            pauseLevel = PauseLevel.Options;
+        CloseAdvancedOptions();
+        if (pauseLevel == PauseLevel.AdvancedOptions)
+            pauseLevel = PauseLevel.Options;
+        else
         {
-            case "sound":
-                if(pauseLevel== PauseLevel.Sounds)
-                {
-                    pauseLevel= PauseLevel.Options;
-                    soundOptionsBar.SetActive(false);
+            switch (option.ToLower())
+            {
+                case "sound":
+                    soundOptionsBar.SetActive(true);
                     break;
-                }
-                soundOptionsBar.SetActive(true);
-                pauseLevel= PauseLevel.Sounds;
-                break;
-            default:
-                Pause();
-                OpenOptions();
-                this.SendMessage($"Brak opcji {option}");
-                break;
+                case "gameplay":
+                    gameplayOptionsBar.SetActive(true);
+                    break;
+                case "controls":
+                    controlsOptionsBar.SetActive(true);
+                    break;
+                case "graphic":
+                    graphicOptionsBar.SetActive(true);
+                    break;
+                default:
+                    Pause();
+                    OpenOptions();
+                    this.SendMessage($"Brak opcji {option}");
+                    break;
+            }
+            pauseLevel = PauseLevel.AdvancedOptions;
         }
     }
 
@@ -99,6 +123,6 @@ public class UiManager : MonoBehaviour
         Game,
         Pause,
         Options,
-        Sounds
+        AdvancedOptions
     }
 }
