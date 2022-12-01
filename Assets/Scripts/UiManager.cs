@@ -21,23 +21,23 @@ public class UiManager : MonoBehaviour
     private GameObject graphicOptionsBar;
     [SerializeField]
     private GameObjectPair keyBindings;
+    [SerializeField]
+    private GameObject saveLoad;
+    [SerializeField]
+    private GameObject diary;
+    [SerializeField]
+    private GameObject skills;
+    [SerializeField]
+    private GameObject equipment;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            switch (pauseLevel)
-            {
-                case PauseLevel.Game:
-                    Pause();
-                    break;
-                case PauseLevel.Pause:
-                    Resume();
-                    break;
-                default:
-                    SetMainPause();
-                    break;
-            }
+            if (pauseLevel == PauseLevel.Pause)
+                Resume();
+            else
+                Pause();
         }
     }
 
@@ -47,6 +47,10 @@ public class UiManager : MonoBehaviour
         pauseMenu.SetActive(true);
         optionsBar.SetActive(false);
         soundOptionsBar.SetActive(false);
+        saveLoad.SetActive(false);
+        diary.SetActive(false);
+        skills.SetActive(false);
+        equipment.SetActive(false);
     }
 
     public void Resume()
@@ -56,28 +60,48 @@ public class UiManager : MonoBehaviour
         optionsBar.SetActive(false);
     }
 
-    public void SetMainPause()
-    {
-        pauseLevel = PauseLevel.Pause;
-        optionsBar.SetActive(false);
-        soundOptionsBar.SetActive(false);
-    }
-
     public void OpenOptions()
     {
         if (pauseLevel != PauseLevel.Pause)
         {
-            SetMainPause();
-            return;
+            if (pauseLevel == PauseLevel.Options || pauseLevel == PauseLevel.AdvancedOptions)
+            {
+                Pause();
+                return;
+            }
+            Pause();
         }
-        pauseLevel = PauseLevel.Pause;
+        pauseLevel = PauseLevel.Options;
         optionsBar.SetActive(true);
         CloseAdvancedOptions();
     }
 
+    public void SaveLoad() =>
+        OpenClose(PauseLevel.SaveLoad, saveLoad);
+
+    public void Diary() =>
+        OpenClose(PauseLevel.Diary, diary);
+
+    public void Skills() =>
+        OpenClose(PauseLevel.Skills, skills);
+
+    public void Equipment() =>
+        OpenClose(PauseLevel.Equipment, equipment);
+
+    private void OpenClose(PauseLevel openClose, GameObject gameObject)
+    {
+        if (pauseLevel == openClose)
+        {
+            Pause();
+            return;
+        }
+        Pause();
+        gameObject.SetActive(true);
+        pauseLevel = openClose;
+    }
+
     private void CloseAdvancedOptions()
     {
-
         soundOptionsBar.SetActive(false);
         gameplayOptionsBar.SetActive(false);
         controlsOptionsBar.SetActive(false);
@@ -124,11 +148,11 @@ public class UiManager : MonoBehaviour
     public void SetActiveKeyBindings(bool set)
     {
         keyBindings.first.SetActive(set);
-        if(!set)
+        if (!set)
             keyBindings.second.SetActive(set);
     }
 
-    public void SwapGamepadKeyboardAndMouse() => 
+    public void SwapGamepadKeyboardAndMouse() =>
         keyBindings.SwapActiveObject();
 
     public enum PauseLevel
@@ -137,5 +161,9 @@ public class UiManager : MonoBehaviour
         Pause,
         Options,
         AdvancedOptions,
+        SaveLoad,
+        Diary,
+        Skills,
+        Equipment
     }
 }
