@@ -19,6 +19,8 @@ public class UiManager : MonoBehaviour
     private GameObject controlsOptionsBar;
     [SerializeField]
     private GameObject graphicOptionsBar;
+    [SerializeField]
+    private GameObjectPair keyBindings;
 
     void Update()
     {
@@ -104,6 +106,7 @@ public class UiManager : MonoBehaviour
                     break;
                 case "controls":
                     controlsOptionsBar.SetActive(true);
+                    SetActiveKeyBindings(false);
                     break;
                 case "graphic":
                     graphicOptionsBar.SetActive(true);
@@ -118,11 +121,21 @@ public class UiManager : MonoBehaviour
         }
     }
 
+    public void SetActiveKeyBindings(bool set)
+    {
+        keyBindings.first.SetActive(set);
+        if(!set)
+            keyBindings.second.SetActive(set);
+    }
+
+    public void SwapGamepadKeyboardAndMouse() => 
+        keyBindings.SwapActiveObject();
+
     public enum PauseLevel
     {
         Game,
         Pause,
         Options,
-        AdvancedOptions
+        AdvancedOptions,
     }
 }
