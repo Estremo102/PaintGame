@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class UiManager : MonoBehaviour
@@ -29,15 +30,30 @@ public class UiManager : MonoBehaviour
     private GameObject skills;
     [SerializeField]
     private GameObject equipment;
+    [SerializeField]
+    private GameObject itemInfo;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (pauseLevel == PauseLevel.Pause)
-                Resume();
-            else
-                Pause();
+            switch (pauseLevel)
+            {
+                case PauseLevel.Item:
+                    Pause();
+                    Equipment();
+                    break;
+                case PauseLevel.AdvancedOptions:
+                    Pause();
+                    OpenOptions();
+                    break;
+                case PauseLevel.Pause:
+                    Resume();
+                    break;
+                default:
+                    Pause();
+                    break;
+            }
         }
     }
 
@@ -51,6 +67,7 @@ public class UiManager : MonoBehaviour
         diary.SetActive(false);
         skills.SetActive(false);
         equipment.SetActive(false);
+        itemInfo.SetActive(false);
     }
 
     public void Resume()
@@ -87,6 +104,18 @@ public class UiManager : MonoBehaviour
 
     public void Equipment() =>
         OpenClose(PauseLevel.Equipment, equipment);
+
+    public void ItemInfo()
+    {
+        if(pauseLevel == PauseLevel.Item)
+            Equipment();
+        else
+        {
+            pauseLevel = PauseLevel.Item;
+            itemInfo.SetActive(true);
+        }
+    }
+
 
     private void OpenClose(PauseLevel openClose, GameObject gameObject)
     {
@@ -164,6 +193,7 @@ public class UiManager : MonoBehaviour
         SaveLoad,
         Diary,
         Skills,
-        Equipment
+        Equipment,
+        Item
     }
 }
